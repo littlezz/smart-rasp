@@ -1,9 +1,17 @@
 from aiohttp import web
 from manager import ws_manager as _ws_manager
+from jinja2 import Environment, FileSystemLoader
+
+
+env = Environment(loader=FileSystemLoader('templates'))
+
+
+
 
 
 def hi(request):
-    return web.Response(text='test hi')
+    html = env.get_template('base.html').render()
+    return web.Response(body=bytes(html, encoding='utf8'))
 
 def websockets(request):
     ws_manager = request.app['ws_manager']

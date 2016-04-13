@@ -22,7 +22,11 @@ def websockets(request):
     ws_manager.broadcast('someone join, there is {} person'.format(len(ws_manager._list)))
 
     while True:
-        msg = yield from ws.receive()
+        try:
+            msg = yield from ws.receive()
+        except RuntimeError:
+            print('ws shutdown')
+            ws_manager.remove(ws)
         print(msg)
         ws.send_str('Got' + msg.data)
 

@@ -10,7 +10,10 @@ class WsManager:
 
     def broadcast(self, msg):
         for ws in self._list:
-            ws.send_str(msg)
+            try:
+                ws.send_str(msg)
+            except RuntimeError:
+                pass
 
 
 ws_manager = WsManager()

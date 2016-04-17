@@ -68,6 +68,7 @@ def loop_sr_state():
 
 @coroutine
 def on_shutdown(app):
+    yield from _ws_manager.close_all()
     app['loop_task'].cancel()
     rcl.cleanup()
     print('clean up')

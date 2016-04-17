@@ -73,7 +73,7 @@ def loop_sr():
     @asyncio.coroutine
     def _loop():
         while True:
-            intercept = rcl.sr_once()
+            intercept = yield from rcl.sr_once()
             print(intercept)
             yield from asyncio.sleep(0.5)
 

@@ -1,15 +1,17 @@
-import RPI.GPIO as gp
+import RPI.GPIO as GPIO
 
+led_pin = 13
 
 class RaspControler:
     def __init__(self):
-        pass
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(led_pin, GPIO.OUT)  # LED pin set as output
 
     def led_on(self):
-        pass
+        GPIO.output(led_pin, GPIO.HIGH)
 
     def led_off(self):
-        pass
+        GPIO.output(led_pin, GPIO.LOW)
 
 
 rasp = RaspControler()

@@ -1,14 +1,19 @@
 import RPi.GPIO as GPIO
 from threading import Thread
 import time
+import asyncio
+from collections import deque
 
 led_pin = 17
 sr_trigger = 18
 sr_echo = 23
 
 
-class RaspControler:
+class RaspController:
     def __init__(self):
+        self._init()
+
+    def _init(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(led_pin, GPIO.OUT)  # LED pin set as output
         GPIO.setup(sr_trigger, GPIO.OUT)
@@ -21,20 +26,30 @@ class RaspControler:
     def led_off(self):
         GPIO.output(led_pin, GPIO.LOW)
 
-    def sr_start(self):
+    def _sr_start(self):
         GPIO.output(sr_trigger, GPIO.HIGH)
         time.sleep(1e-5)
         GPIO.output(sr_trigger, GPIO.LOW)
         self._st = time.time()
         print('sr start!')
 
-    def sr_once(self):
-        self.sr_start()
+    def sr_once_block(self):
+        self._sr_start()
         while not GPIO.event_detected(sr_echo):
             time.sleep(0.001)
         now = time.time()
         intercept = (now - self._st)*170
         return intercept
+
+    @asyncio.coroutine
+    def sr_once(self):
+        self._sr_start()
+        while not GPIO.event_detected(sr_echo):
+            yield from asyncio.sleep(0.001)
+        now = time.time()
+        intercept = (now - self._st) * 170
+        return intercept
+
 
 
     def debug_output(self):
@@ -51,4 +66,20 @@ class RaspControler:
         GPIO.cleanup()
 
 
-rasp = RaspControler()
+rcl = RaspController()
+
+def loop_sr():
+    @asyncio.coroutine
+    def _loop():
+        while True:
+            intercept = rcl.sr_once()
+            print(intercept)
+            yield from asyncio.sleep(0.5)
+
+    loop = asyncio.get_event_loop()
+    loop.create_task(_loop)
+    try:
+        loop.run_forever()
+    finally:
+        loop.close()
+        rcl.cleanup()

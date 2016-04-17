@@ -33,6 +33,8 @@ class RaspControler:
         self.t = Thread(target=output)
         self.t.start()
 
+    def cleanup(self):
+        GPIO.cleanup()
 
 
 rasp = RaspControler()

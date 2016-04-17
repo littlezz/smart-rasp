@@ -23,27 +23,25 @@
     ws.onmessage = function (event) {
         var msg = JSON.parse(event.data);
         if (msg.id == 2){
-            $(".distance").text(msg.text)
+            $("#distance").text(msg.text)
         }
         if (msg.id==1){
-            noty()
+            noty('Danger', {'body': 'distance less than 0.5m !'})
         }
 
     };
-    function noty() {
+    function noty(title, option) {
         Notification.requestPermission(function (permision) {
-        var notification = new Notification('hi', {'body':'!!!'})
+        var notification = new Notification(title, option)
         })
     }
 
 
 </script>
 
-<h1 onclick="noty()"> welcome</h1>
+<span class="label label-default" id="distance"></span>
 
-<p class="distance"></p>
 
-<button onclick="noty()">noty!</button>
 
 <p>
 

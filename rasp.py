@@ -63,6 +63,7 @@ class RaspController:
 
     def cleanup(self):
         GPIO.cleanup()
+        print('clean up!')
 
 
 rcl = RaspController()

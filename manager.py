@@ -16,7 +16,7 @@ class WsManager:
     def broadcast(self, msg):
         for ws in self._list:
             try:
-                yield from ws.send_str(msg)
+                ws.send_str(msg)
             except RuntimeError:
                 self.remove(ws)
 

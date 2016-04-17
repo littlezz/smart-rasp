@@ -25,7 +25,7 @@ def websockets(request):
     ws = web.WebSocketResponse()
     yield from ws.prepare(request)
     ws_manager.add(ws)
-    ws_manager.broadcast('someone join, there is {} person'.format(len(ws_manager._list)))
+    yield from ws_manager.broadcast('someone join, there is {} person'.format(len(ws_manager._list)))
 
     while True:
         try:

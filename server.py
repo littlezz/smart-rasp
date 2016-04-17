@@ -31,6 +31,7 @@ def websockets(request):
         except RuntimeError:
             print('ws shutdown')
             ws_manager.remove(ws)
+            break
         # print(msg)
         # ws.send_str('Got' + str(msg.data))
 

@@ -23,10 +23,19 @@
     ws.onmessage = function (event) {
         $("h1").text(event.data)
 
+    };
+    function noty() {
+        Notification.requestPermission(function (permision) {
+        var notification = new Notification('hi', {'body':'!!!'})
+        })
     }
+
+
 </script>
 
 <h1> welcome</h1>
+
+<button onclick="noty()">noty!</button>
 
 <p>
 

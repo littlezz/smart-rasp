@@ -2,6 +2,8 @@ from aiohttp import web
 from manager import ws_manager as _ws_manager
 from jinja2 import Environment, FileSystemLoader
 from asyncio import coroutine
+import asyncio
+from rasp import rcl
 
 env = Environment(loader=FileSystemLoader('templates'))
 
@@ -35,13 +37,29 @@ def websockets(request):
     print('close ws')
     return ws
 
+@coroutine
+def loop_sr_state():
+    while True:
+        intercept = yield from rcl.sr_once()
+        if intercept < 0.5:
+            _ws_manager.broadcast('Danger!')
+            rcl.led_on()
+        else:
+            rcl.led_off()
+        yield from asyncio.sleep(0.5)
 
+@coroutine
+def on_shutdown(app):
+    rcl.cleanup()
+    print('clean up')
 
 def init():
     app = web.Application()
     app.router.add_route('GET', '/', hi)
     app.router.add_route('GET', '/ws', websockets)
     app['ws_manager'] = _ws_manager
+    app.loop.create_task(loop_sr_state())
+    app.on_shutdown.append(on_shutdown)
 
     return app
 

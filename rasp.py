@@ -69,6 +69,7 @@ class RaspController:
 rcl = RaspController()
 
 def loop_sr():
+
     @asyncio.coroutine
     def _loop():
         while True:
@@ -77,7 +78,7 @@ def loop_sr():
             yield from asyncio.sleep(0.5)
 
     loop = asyncio.get_event_loop()
-    loop.create_task(_loop)
+    loop.create_task(_loop())
     try:
         loop.run_forever()
     finally:

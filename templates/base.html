@@ -21,7 +21,8 @@
     ip = location.host;
     ws = new WebSocket('ws://'+ip+'/ws');
     ws.onmessage = function (event) {
-        $("h1").text(event.data)
+        $("h1").text(event.data);
+        noty();
 
     };
     function noty() {

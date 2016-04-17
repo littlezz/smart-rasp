@@ -6,7 +6,8 @@
 </head>
 <body>
 <script>
-    ws = new WebSocket('ws://localhost:8080/ws');
+    ip = location.host;
+    ws = new WebSocket('ws://'+ip+':8080/ws');
     ws.onmessage = function (event) {
         document.write(event.data);
     }

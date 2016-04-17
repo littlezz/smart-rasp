@@ -12,6 +12,9 @@
 
     <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script src="https://cdn.rawgit.com/alertifyjs/alertify.js/v1.0.10/dist/js/alertify.js"></script>
+
 </head>
 <body>
 <script>
@@ -19,6 +22,7 @@
     ws = new WebSocket('ws://'+ip+'/ws');
     ws.onmessage = function (event) {
         $("h1").text(event.data)
+
     }
 </script>
 

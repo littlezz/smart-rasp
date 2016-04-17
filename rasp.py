@@ -25,9 +25,8 @@ class RaspControler:
         GPIO.output(sr_trigger, GPIO.HIGH)
         time.sleep(1e-5)
         GPIO.output(sr_trigger, GPIO.LOW)
-        print('sr start!')
         self._st = time.time()
-
+        print('sr start!')
 
     def sr_once(self):
         self.sr_start()

@@ -1,9 +1,11 @@
-from aiohttp import web
+from aiohttp import web, MsgType
 from manager import ws_manager as _ws_manager
 from jinja2 import Environment, FileSystemLoader
 from asyncio import coroutine
 import asyncio
 from rasp import rcl
+import json
+
 
 env = Environment(loader=FileSystemLoader('templates'))
 
@@ -35,20 +37,33 @@ def websockets(request):
         # print(msg)
         # ws.send_str('Got' + str(msg.data))
 
-    ws_manager.remove(ws)
     print('close ws')
     return ws
 
 @coroutine
 def loop_sr_state():
+    already_danger = False
     while True:
         intercept = yield from rcl.sr_once()
         if intercept < 0.5:
-            _ws_manager.broadcast('Danger!')
-            rcl.led_on()
+            if not already_danger:
+                already_danger = True
+                msg = {
+                    'id': 1,
+                    'text':'Danger!'
+                }
+                _ws_manager.broadcast(json.dumps(msg))
+                rcl.led_on()
             print('intercept', intercept)
         else:
             rcl.led_off()
+            already_danger = False
+
+        msg = {
+            'id': 2,
+            'text': intercept,
+        }
+        _ws_manager.broadcast(json.dumps(msg))
         yield from asyncio.sleep(0.5)
 
 @coroutine

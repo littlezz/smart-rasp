@@ -32,7 +32,7 @@ def websockets(request):
             print('ws shutdown')
             ws_manager.remove(ws)
         print(msg)
-        ws.send_str('Got' + msg.data)
+        ws.send_str('Got' + str(msg.data))
 
     print('close ws')
     return ws
@@ -44,6 +44,7 @@ def loop_sr_state():
         if intercept < 0.5:
             _ws_manager.broadcast('Danger!')
             rcl.led_on()
+            print('intercept', intercept)
         else:
             rcl.led_off()
         yield from asyncio.sleep(0.5)

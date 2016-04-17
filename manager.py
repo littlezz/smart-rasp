@@ -13,7 +13,7 @@ class WsManager:
             try:
                 ws.send_str(msg)
             except RuntimeError:
-                pass
+                self.remove(ws)
 
 
 ws_manager = WsManager()

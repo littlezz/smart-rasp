@@ -22,12 +22,13 @@ class RaspControler:
 
     def sr_start(self):
         self.pwm.start(1)
+        print('sr start!')
 
     def debug_output(self):
         def output():
             import time
             while True:
-                print(int(GPIO.input(sr_echo)))
+                print(GPIO.input(sr_echo))
                 time.sleep(0.001)
 
         self.t = Thread(target=output)

@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 
-led_pin = 13
+led_pin = 17
 
 class RaspControler:
     def __init__(self):

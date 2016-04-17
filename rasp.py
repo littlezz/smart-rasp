@@ -31,7 +31,7 @@ class RaspControler:
 
     def sr_once(self):
         self.sr_start()
-        while not GPIO.event_detect(sr_echo):
+        while not GPIO.event_detected(sr_echo):
             time.sleep(0.001)
         now = time.time()
         intercept = (now - self._st)*170

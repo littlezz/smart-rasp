@@ -42,27 +42,24 @@ def websockets(request):
 
 @coroutine
 def loop_sr_state():
-    already_danger = False
+    danger = False
     while True:
         intercept = yield from rcl.sr_once()
+        msg = {
+            'danger': danger,
+            'text': intercept,
+            'alert': False,
+        }
         if intercept < 0.5:
-            if not already_danger:
-                already_danger = True
-                msg = {
-                    'id': 1,
-                    'text':'Danger!'
-                }
-                _ws_manager.broadcast(json.dumps(msg))
+            if not danger:
+                danger = True
+                msg['alert'] = True
                 rcl.led_on()
             print('intercept', intercept)
         else:
             rcl.led_off()
-            already_danger = False
+            danger = False
 
-        msg = {
-            'id': 2,
-            'text': intercept,
-        }
         _ws_manager.broadcast(json.dumps(msg))
         yield from asyncio.sleep(0.5)
 

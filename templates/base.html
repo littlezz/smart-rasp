@@ -22,13 +22,17 @@
     ws = new WebSocket('ws://'+ip+'/ws');
     ws.onmessage = function (event) {
         var msg = JSON.parse(event.data);
-        if (msg.id == 2){
-            $("#distance").text(msg.text)
+        dis = $("#distance");
+        dis.text(msg.text);
+        if (msg.alert==true){
+//            dis.removeClass('label-default').addClass('label-warning');
+            noty('Danger!', {'body': 'distance less than 0.5M!'})
         }
-        if (msg.id==1){
-            noty('Danger', {'body': 'distance less than 0.5m !'})
-        }
-
+//        if (msg.danger==false){
+//            dis.removeClass('label-warning').addClass('label-default');
+//            dis.
+//        }
+        dis.toggleClass('label-danger', msg.danger);
     };
     function noty(title, option) {
         Notification.requestPermission(function (permision) {
@@ -39,7 +43,7 @@
 
 </script>
 
-<span class="label label-default" id="distance"></span>
+<h1 align="center"><span class="label label-default" id="distance"></span></h1>
 
 
 

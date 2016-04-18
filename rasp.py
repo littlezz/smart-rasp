@@ -1,4 +1,6 @@
-import RPi.GPIO as GPIO
+import platform
+if platform.system() != 'Darwin':
+    import RPi.GPIO as GPIO
 from threading import Thread
 import time
 import asyncio
@@ -65,8 +67,25 @@ class RaspController:
         GPIO.cleanup()
         print('clean up!')
 
+if platform.system() != 'Darwin':
+    rcl = RaspController()
+else:
+    from random import random, uniform
+    class DummyRCL:
+        def led_on(self):
+            pass
 
-rcl = RaspController()
+        def led_off(self):
+            pass
+
+        @asyncio.coroutine
+        def sr_once(self):
+            return uniform(0,0.6)
+
+        def cleanup(self):
+            pass
+
+    rcl = DummyRCL()
 
 def loop_sr():
 

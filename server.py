@@ -1,4 +1,4 @@
-from aiohttp import web, MsgType
+from aiohttp import web
 from manager import ws_manager as _ws_manager
 from jinja2 import Environment, FileSystemLoader
 from asyncio import coroutine
@@ -25,7 +25,7 @@ def websockets(request):
     ws = web.WebSocketResponse()
     yield from ws.prepare(request)
     ws_manager.add(ws)
-    ws_manager.broadcast('someone join, there is {} person'.format(len(ws_manager._list)))
+    # ws_manager.broadcast('someone join, there is {} person'.format(len(ws_manager._list)))
 
     while True:
         try:

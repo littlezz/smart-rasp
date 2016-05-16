@@ -4,7 +4,6 @@ if platform.system() != 'Darwin':
 from threading import Thread
 import time
 import asyncio
-from collections import deque
 
 led_pin = 17
 sr_trigger = 18

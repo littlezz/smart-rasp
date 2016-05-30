@@ -69,6 +69,7 @@ class RaspController:
 if platform.system() != 'Darwin':
     rcl = RaspController()
 else:
+    # Dummy RCL for develop server
     from random import random, uniform
     class DummyRCL:
         def led_on(self):
@@ -79,7 +80,7 @@ else:
 
         @asyncio.coroutine
         def sr_once(self):
-            return uniform(0,0.6)
+            return uniform(0.5,0.7)
 
         def cleanup(self):
             pass

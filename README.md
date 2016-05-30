@@ -2,13 +2,19 @@ Smart-rasp
 ===========
 
 My homework, I will deploy a sever on raspberry pi and use Websockets communicate with client.  
-Client can control the raspberry. (led on or off... and so on)  
+Client can receive the distance collect by supersonic wave from raspberry. 
+
+
+Requirement
+-----------
+- Python >= 3.4  
+- aiohttp
+- GPIO on raspberry
 
 
 
 TODO
 -------
-- [] use `await` instead of `yield from`  
-- [] complete `rasp.py`  
-- [] connect with raspberry  
-- [] beautiful html with bootstrap  
+- [x] complete `rasp.py`  
+- [x] connect with raspberry  
+- [x] beautiful html with bootstrap  
